@@ -1,14 +1,18 @@
 <template>
   <div>
-    <h1>Vue.js Log Filter</h1>
+    <div class="info">
+      <h1>Witaj Amazonko.</h1>
+      <p>Tutaj możesz wkleić swoje walki z dziennika z zakładki walka. Zostaną one przefiltrowane tak aby
+        usunąć walki ze zwierzętami i będziesz miała gotowy wpis do wklejenia na forum. Oszczędzi Ci to czas.</p>
+    </div>
 
-    <!-- Pole tekstowe do wklejania logów -->
-    <textarea v-model="logsText" placeholder="Wklej logi tutaj"></textarea>
+ 
+      <textarea class="fight" v-model="logsText" placeholder="Wklej logi tutaj"></textarea>
 
-    <!-- Przycisk do uruchomienia filtrowania -->
     <button @click="filterLogs">Filtruj</button>
+    <button v-if="filteredLogs.length > 0" @click="copyResults">Kopiuj Wyniki</button>
 
-    <!-- Wyświetlanie przefiltrowanych logów -->
+
     <div>
       <h2>Przefiltrowane Logi:</h2>
       <ul>
@@ -22,46 +26,77 @@
 export default {
   data() {
     return {
-      logsText: '', // Dane wklejone przez użytkownika
-      filteredLogs: [] // Przechowuje przefiltrowane logi
+      logsText: '',
+      filteredLogs: []
     };
   },
   methods: {
     filterLogs() {
-      // Rozdziel logi na linie
       const lines = this.logsText.split('\n');
       const filteredLogs = [];
 
-      let currentLog = ''; // Przechowuje bieżący log
+      let currentLog = ''; 
 
-      // Lista zwierząt do odfiltrowania
-      const zwierzetaDoFiltrowania = ['Wilk', 'Jeleń', 'Lis', 'Przepiórka', 'Dzik', 'PRZEGRAŁEŚ', 'Słoń', 'Szejk Am-Al', 'przestępca', 'zwierzę' ];
+      const zwierzetaDoFiltrowania = ['Wilk', 'Jeleń', 'Lis', 'Przepiórka', 'Dzik', 'PRZEGRAŁEŚ', 'Słoń', 'Szejk Am-Al', 'przestępca', 'zwierzę'];
 
-      // Przeglądaj każdą linię
       for (const line of lines) {
         if (line.match(/^\d+\.\s\d+/)) {
-          // Jeśli linia rozpoczyna nowy log, dodaj poprzedni log do wyników
           if (currentLog.trim() !== '' && !zwierzetaDoFiltrowania.some(zwierze => currentLog.includes(zwierze))) {
             filteredLogs.push(currentLog.trim());
           }
           currentLog = line;
         } else {
-          // W przeciwnym razie dodaj linię do bieżącego logu
           currentLog += '<br>' + line;
         }
       }
 
-      // Dodaj ostatni log, jeśli nie zawiera zwierzęcia
       if (currentLog.trim() !== '' && !zwierzetaDoFiltrowania.some(zwierze => currentLog.includes(zwierze))) {
         filteredLogs.push(currentLog.trim());
       }
 
       this.filteredLogs = filteredLogs;
+    },
+    copyResults() {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = this.filteredLogs.join('<br>');
+
+      document.body.appendChild(tempDiv);
+
+      const range = document.createRange();
+      range.selectNodeContents(tempDiv);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+
+      try {
+        document.execCommand('copy');
+      } catch (err) {
+        console.error('Nie udało się skopiować jako HTML: ', err);
+      }
+
+      document.body.removeChild(tempDiv);
+
+      window.getSelection().removeAllRanges();
     }
   }
 };
 </script>
 
+
 <style scoped>
-/* Możesz dodać stylizację CSS tutaj */
+.info {
+  width: 90%;
+  text-align: center;
+  margin: 0 auto;
+
+}
+.fight {
+  width: 90%;
+  max-width: 600px;
+  height: 200px;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+}
 </style>
