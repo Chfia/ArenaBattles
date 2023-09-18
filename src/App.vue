@@ -1,7 +1,18 @@
 <template>
   <div class="app">
     <div class="fight" id="fight">
-      <HelloWorld msg="Welcome to Your Vue.js App" />
+      <div class="info">
+            <h1>Witaj Amazonko.</h1>
+            <p>Tutaj możesz wkleić swoje walki i wsady. Oszczędzi Ci to czas.</p>
+        </div>
+      <div class="component-container">
+        <div class="component">
+          <HelloWorld msg="Welcome to Your Vue.js App" />
+        </div>
+        <div class="component">
+          <AmazonCatch /> <!-- Dodaj komponent AmazonCatch -->
+        </div>
+      </div>
     </div>
     <footer @click="scrollToFight">
       <p>Do góry</p>
@@ -11,11 +22,13 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import AmazonCatch from './components/AmazonCatch.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    AmazonCatch // Dodaj komponent AmazonCatch
   },
   methods: {
     scrollToFight() {
@@ -40,6 +53,12 @@ export default {
   color: #274d2a;
   scroll-behavior: smooth;
 }
+.info {
+    width: 90%;
+    text-align: center;
+    margin: 0 auto;
+
+}
 
 footer {
   position: fixed;
@@ -50,6 +69,15 @@ footer {
   padding: 10px;
   text-align: center;
   cursor: pointer;
+}
+
+.component-container {
+  display: flex;
+  justify-content: space-between; /* Rozłożenie komponentów poziomo */
+}
+
+.component {
+  width: 48%; /* Szerokość każdego komponentu, aby zajmowały po połowie */
 }
 
 @media (max-width: 767px) {
