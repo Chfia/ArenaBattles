@@ -33,7 +33,7 @@ export default {
 
       let currentLog = ''; 
 
-      const zwierzetaDoFiltrowania = ['Dziennik', 'PRZEGRAŁEŚ', 'Szejk', 'przestępca', 'zwierzę'];
+      const zwierzetaDoFiltrowania = ['Dziennik', 'PRZEGRAŁEŚ', 'Szejk', 'przestępca', 'zwierzę', 'Arabski jeździec'];
 
       for (const line of lines) {
         if (line.match(/^\d+\.\s\d+/)) {
