@@ -22,18 +22,26 @@
       };
     },
     methods: {
-      filterLogs() {
-        const lines = this.logsText.split('\n');
-        const wsadyDoFiltrowania = ['porwała'];
-  
-        this.filteredLogs = lines
-          .filter((line) => {
-            return wsadyDoFiltrowania.some((wsad) => line.includes(wsad));
-          })
-          .map((line) => {
-            return line.replace(/^\d+\.\s\d+\s*/, '');
-          });
-      },
+filterLogs() {
+  const lines = this.logsText.split('\n');
+  const wsadyDoFiltrowania = ['porwała'];
+
+  const filtered = lines
+    .filter((line) =>
+      wsadyDoFiltrowania.some((wsad) =>
+        line.toLowerCase().includes(wsad.toLowerCase())
+      )
+    )
+    .map((line) =>
+      line.replace(/^\d+\.\s\d+\s*/, '').trim()
+    );
+
+  // usuwanie duplikatów obok siebie
+  this.filteredLogs = filtered.filter((line, i, arr) =>
+    i === 0 || line !== arr[i - 1]
+  );
+},
+
       copyResults() {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = this.filteredLogs.join('<br>');
