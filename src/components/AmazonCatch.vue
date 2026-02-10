@@ -2,7 +2,7 @@
     <div>
       <textarea class="amCatch" v-model="logsText" placeholder="Wklej wsady tutaj"></textarea>
       <button @click="filterLogs">Filtruj</button>
-      <button v-if="filteredLogs.length > 0" @click="copyResults">Kopiuj Wyniki</button>
+      <button v-if="filteredLogs.length > 0" @click="copyResults">Kopiuj Wyniki!</button>
   
       <div>
         <h2>Przefiltrowane wsady:</h2>
